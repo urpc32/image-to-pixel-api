@@ -2,6 +2,6 @@
     "name": "image-to-pixel-api",
     "version": "1.0.0",
     "dependencies": {
-        "canvas": "2.11.0"
+        "canvas-prebuilt": "^1.6.13"
     }
 }
