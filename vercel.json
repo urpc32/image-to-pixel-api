@@ -1,1 +1,15 @@
-
+{
+    "version": 2,
+    "builds": [
+        {
+            "src": "api/get-pixels.js",
+            "use": "@vercel/node"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/api/get-pixels",
+            "dest": "api/get-pixels.js"
+        }
+    ]
+}
