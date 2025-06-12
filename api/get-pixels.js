@@ -2,10 +2,14 @@ const Jimp = require('jimp');
 
 module.exports = async (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    const { url, width = 250, height = 250 } = req.query;
+    const { url, width = 50, height = 50 } = req.query;
+    const authToken = req.headers.authorization?.split(' ')[1];
 
     if (!url) {
         return res.status(400).json({ error: 'Missing image URL' });
+    }
+    if (!authToken || authToken !== process.env.API_AUTH_TOKEN) {
+        return res.status(401).json({ error: 'Unauthorized: Invalid or missing API key' });
     }
 
     try {
