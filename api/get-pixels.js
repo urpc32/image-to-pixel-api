@@ -1,6 +1,7 @@
-const { createCanvas, loadImage } = require('canvas');
+const Jimp = require('jimp');
 
 module.exports = async (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
     const { url, width = 50, height = 50 } = req.query;
 
     if (!url) {
@@ -8,16 +9,16 @@ module.exports = async (req, res) => {
     }
 
     try {
-        const image = await loadImage(url);
-        const canvas = createCanvas(parseInt(width), parseInt(height));
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(image, 0, 0, width, height);
-        const imageData = ctx.getImageData(0, 0, width, height).data;
+        const image = await Jimp.read(url);
+        const resized = image.resize(parseInt(width), parseInt(height));
         const pixels = [];
-
-        for (let i = 0; i < imageData.length; i += 4) {
-            pixels.push([imageData[i] / 255, imageData[i + 1] / 255, imageData[i + 2] / 255]);
-        }
+        resized.scan(0, 0, width, height, (x, y, idx) => {
+            pixels.push([
+                resized.bitmap.data[idx] / 255, // R
+                resized.bitmap.data[idx + 1] / 255, // G
+                resized.bitmap.data[idx + 2] / 255 // B
+            ]);
+        });
 
         res.json({ pixels, width, height });
     } catch (error) {
