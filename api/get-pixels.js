@@ -2,7 +2,7 @@ const Jimp = require('jimp');
 
 module.exports = async (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    const { url, width = 4000, height = 4000 } = req.query; // Default to 250x250 or maybe can setted to 4k
+    const { url, width = 1000, height = 1000 } = req.query; // Default to 250x250 or maybe can setted to 4k
 
     if (!url) {
         return res.status(400).json({ error: 'Missing image URL' });
